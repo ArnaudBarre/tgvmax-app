@@ -1,0 +1,12 @@
+{
+  "name": "tgvmax-weekends",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Arnaud Barré <arnaudbarremn@gmail.com>",
+  "scripts": {
+    "start": "node index"
+  },
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
