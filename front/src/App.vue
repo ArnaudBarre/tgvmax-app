@@ -31,12 +31,17 @@
     <transition name="fade">
       <div v-if="httpError" class="alert alert-danger">Oups ! {{httpError}}</div>
     </transition>
+    <div v-for="result in results">
+      <result :result="result"></result>
+    </div>
   </div>
 </template>
 
 <script>
-import stations from './stations.json'
-import Datepicker from 'vuejs-datepicker';
+import stations from './../../json/stations.json'
+import defaultResponse from './../../json/response.json'
+import datepicker from 'vuejs-datepicker'
+import result from './components/Result.vue'
 
 let oneMonth = () => new Date(new Date().setMonth((new Date().getMonth() + 1) % 11));
 let today = () => new Date(new Date().setHours(0, 0, 0, 0));
@@ -69,7 +74,8 @@ export default {
   },
   methods: {
     search (value) {
-      this.filterStations = stations.filter(name => name.toUpperCase().indexOf(value.toUpperCase()) >= 0).slice(0, 5);
+      this.filterStations = value ?
+        stations.filter(name => name.toUpperCase().indexOf(value.toUpperCase()) >= 0).slice(0, 5) : [];
     },
     selected (value) {
       this.stationError = false;
@@ -94,6 +100,7 @@ export default {
           error => {
             this.httpError = error.statusText;
             setTimeout(() => this.httpError = null, 3000);
+            this.results = defaultResponse;
           });
       }
     },
@@ -101,7 +108,7 @@ export default {
       this.stationError = this.station && stations.indexOf(this.station) == -1
     }
   },
-  components: {Datepicker}
+  components: {datepicker, result}
 }
 </script>
 

@@ -1,6 +1,6 @@
 let express = require('express');
 let request = require('request');
-let stations = require('./front/src/stations.json');
+let stations = require('./json/stations.json');
 
 const api = 'https://ressources.data.sncf.com/api/records/1.0/search/?dataset=tgvmax';
 
@@ -15,7 +15,7 @@ let groupData = (body, key) => {
              .map(r => r.fields)
              .sort((a, b) => a.heure_depart.replace(":", "") - b.heure_depart.replace(":", ""))
              .reduce((acc, val) => {
-               (acc[val[key]] = acc[val[key]] || []).push(val.heure_depart + '-' + val.heure_arrivee);
+               (acc[val[key]] = acc[val[key]] || []).push(val.heure_depart + ' -> ' + val.heure_arrivee);
                return acc;
              }, {});
 };
