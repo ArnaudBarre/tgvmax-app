@@ -15,7 +15,7 @@ let groupData = (body, key) => {
              .map(r => r.fields)
              .sort((a, b) => a.heure_depart.replace(":", "") - b.heure_depart.replace(":", ""))
              .reduce((acc, val) => {
-               (acc[val[key]] = acc[val[key]] || []).push(val.heure_depart + ' -> ' + val.heure_arrivee);
+               (acc[val[key]] = acc[val[key]] || new Set()).add(val.heure_depart + ' -> ' + val.heure_arrivee);
                return acc;
              }, {});
 };
@@ -28,7 +28,7 @@ app.get('/stations', (req, res) => {
     if (dataBack.error) res.sendStatus(dataBack.error.statusCode);
     let common = [];
     Object.keys(dataGo).forEach(station => {
-      if (dataBack.hasOwnProperty(station)) common.push({station, go: dataGo[station], back: dataBack[station]})
+      if (dataBack.hasOwnProperty(station)) common.push({station, go: [...dataGo[station]], back:[...dataBack[station]]})
     });
     res.send(common);
   };

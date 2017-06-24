@@ -1,33 +1,36 @@
 <template>
   <div class="container">
-    <div class="form-group row">
-      <label class="col-md-1 col-form-label">Depuis</label>
-      <div class="col-md-11" :class="{'has-danger': stationError}">
-        <input type="text" v-model="station" class="form-control" placeholder="Gare TGV de départ"
-               @input="search($event.target.value)" @keyup.enter="selectFirst" @blur="inputBlur" autofocus>
-        <div class="list-group">
-          <a href="#" class="list-group-item list-group-item-action" v-for="station in filterStations"
-             @click="selected(station)">
-            {{ station }}
-          </a>
+    <div class="my-4">
+      <div class="form-group row">
+        <label class="col-md-1 col-form-label">Depuis</label>
+        <div class="col-md-11" :class="{'has-danger': stationError}">
+          <input type="text" v-model="station" class="form-control" placeholder="Gare TGV de départ"
+                 @input="search($event.target.value)" @keyup.enter="selectFirst" @blur="inputBlur" autofocus>
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action" v-for="station in filterStations"
+               @click="selected(station)">
+              {{ station }}
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-1 col-form-label">Aller</label>
-      <div class="col-md-5">
-        <datepicker v-model="startDate" input-class="form-control" language="fr" :monday-first="true"
-                    placeholder="Sélectionnez un jour" :disabled="disabledStart" @selected="startSelected"></datepicker>
+      <div class="form-group row">
+        <label class="col-md-1 col-form-label">Aller</label>
+        <div class="col-md-5">
+          <datepicker v-model="startDate" input-class="form-control" language="fr" :monday-first="true"
+                      placeholder="Sélectionnez un jour" :disabled="disabledStart"
+                      @selected="startSelected"></datepicker>
+        </div>
+        <label class="col-md-1 col-form-label">Retour</label>
+        <div class="col-md-5">
+          <datepicker v-model="endDate" input-class="form-control" language="fr" :monday-first="true"
+                      placeholder="Sélectionnez un jour" :disabled="disabledEnd" @selected="endSelected"></datepicker>
+        </div>
       </div>
-      <label class="col-md-1 col-form-label">Retour</label>
-      <div class="col-md-5">
-        <datepicker v-model="endDate" input-class="form-control" language="fr" :monday-first="true"
-                    placeholder="Sélectionnez un jour" :disabled="disabledEnd" @selected="endSelected"></datepicker>
-      </div>
+      <button type="submit" class="btn btn-primary btn-block form-group" :class="{disabled: hasErrors}" @click="submit">
+        Rechercher !
+      </button>
     </div>
-    <button type="submit" class="btn btn-primary btn-block form-group" :class="{disabled: hasErrors}" @click="submit">
-      Rechercher !
-    </button>
     <transition name="fade">
       <div v-if="httpError" class="alert alert-danger">Oups ! {{httpError}}</div>
     </transition>

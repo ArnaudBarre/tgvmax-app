@@ -2,7 +2,7 @@
   <div>
     <h5 class="text-muted">{{title}}{{list.length > 1 ? 's' : ''}}</h5>
     <div v-for="schedule in schedules">{{schedule}}</div>
-    <div v-if="list.length > 2">
+    <div v-if="list.length > 3">
       <div>
         <img class="arrow" v-show="hide" @click="hide = !hide" src="../assets/arrow-down.png"/>
         <img class="arrow" v-show="!hide" @click="hide = !hide" src="../assets/arrow-up.png"/>
@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     schedules () {
-      return this.hide ? this.list.slice(0, 2) : this.list
+      return this.hide ? this.list.slice(0, this.list.length == 3 ? 3 : 2) : this.list
     }
   }
 }
