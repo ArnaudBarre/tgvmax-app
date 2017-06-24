@@ -1,24 +1,24 @@
 <template>
-  <div class="card card-outline-primary mb-3">
+  <div class="card card-outline-primary mb-4">
     <div class="card-block row">
       <div class="col-12 col-md-4">
         <h4 class="card-title">{{result.station}}</h4>
       </div>
       <div class="col-6 col-md-4">
-        <h6 class="card-subtitle mb-2 text-muted">Allers</h6>
-        <div v-for="go in result.go">{{go}}</div>
+        <scheduleList title="Aller" :list="result.go"></scheduleList>
       </div>
       <div class="col-6 col-md-4">
-        <h6 class="card-subtitle mb-2 text-muted">Retours</h6>
-        <div v-for="back in result.back">{{back}}</div>
-
+        <scheduleList title="Retour" :list="result.back"></scheduleList>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import scheduleList from './ScheduleList.vue'
+
 export default {
-  props: ['result']
+  props: ['result'],
+  components: {scheduleList}
 }
 </script>
