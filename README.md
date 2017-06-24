@@ -1,6 +1,6 @@
 # tgvmax-weekends
 
-A vue.js - node.js project
+A Vue.js - Express project
 
 ## Build Setup
 
