@@ -26,9 +26,9 @@ app.get('/stations', (req, res) => {
   let combine = () => {
     if (dataGo.error) res.sendStatus(dataGo.error.statusCode);
     if (dataBack.error) res.sendStatus(dataBack.error.statusCode);
-    let common = {};
+    let common = [];
     Object.keys(dataGo).forEach(station => {
-      if (dataBack.hasOwnProperty(station)) common[station] = {go: dataGo[station], back: dataBack[station]}
+      if (dataBack.hasOwnProperty(station)) common.push({station, go: dataGo[station], back: dataBack[station]})
     });
     res.send(common);
   };
