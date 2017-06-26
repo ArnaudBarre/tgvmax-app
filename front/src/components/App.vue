@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import stations from './../../json/stations.json'
-import defaultResponse from './../../json/response.json'
+import stations from './../../../json/stations.json'
+import defaultResponse from './../../../json/response.json'
 import datepicker from 'vuejs-datepicker'
-import result from './components/Result.vue'
+import result from './Result.vue'
 
 let oneMonth = () => new Date(new Date().setMonth((new Date().getMonth() + 1) % 11));
 let today = () => new Date(new Date().setHours(0, 0, 0, 0));

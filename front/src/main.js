@@ -1,10 +1,18 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
-import App from './App.vue'
+import VueRouter from 'vue-router'
+import App from './components/App.vue'
+import Home from './components/Home.vue'
 
 Vue.use(VueResource);
+Vue.use(VueRouter);
 
 new Vue({
   el: '#app',
-  render: h => h(App)
+  router: new VueRouter({
+    routes: [
+      {path: '/', component: Home},
+      {path: '/search', component: App}
+    ]
+  })
 });
