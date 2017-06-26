@@ -7,10 +7,10 @@
           <input type="text" v-model="station" class="form-control" placeholder="Gare TGV de départ"
                  @input="search($event.target.value)" @keyup.enter="selectFirst" @blur="inputBlur" autofocus>
           <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action" v-for="station in filterStations"
-               @click="selected(station)">
+            <button class="list-group-item list-group-item-action" v-for="station in filterStations"
+                    @click="selected(station)">
               {{ station }}
-            </a>
+            </button>
           </div>
         </div>
       </div>
