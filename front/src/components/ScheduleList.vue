@@ -1,7 +1,9 @@
 <template>
   <div>
     <h5 class="text-muted">{{title}}{{list.length > 1 ? 's' : ''}}</h5>
-    <div v-for="schedule in schedules">{{schedule}}</div>
+    <transition-group name="toggle">
+      <div v-for="schedule in schedules" :key="schedule">{{schedule}}</div>
+    </transition-group>
     <div v-if="list.length > 3">
       <div>
         <img class="arrow" v-show="hide" @click="hide = !hide" src="../assets/arrow-down.png"/>
@@ -35,5 +37,18 @@ export default {
 
   .arrow:hover {
     background-color: #e1e1e1;
+  }
+
+  .toggle-enter-active, .toggle-leave-active {
+    transition: .6s;
+  }
+
+  .toggle-enter, .toggle-leave-to {
+    opacity: 0;
+    height: 0;
+  }
+
+  .toggle-enter-to, .toggle-leave {
+    height: 24px;
   }
 </style>

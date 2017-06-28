@@ -32,9 +32,12 @@
       </button>
     </div>
     <transition name="fade">
-      <div v-if="httpError" class="alert alert-danger">Oups ! {{httpError}}</div>
+      <div v-if="httpError" class="alert alert-danger mb-4">Oups ! {{httpError}}
+        <button class="close" aria-label="Close" @click="dismiss"><span aria-hidden="true">&times;</span></button>
+      </div>
     </transition>
-    <div v-for="result in results">
+    <div v-show="loading" class="loader mb-4"></div>
+    <div v-show="!loading" v-for="result in results">
       <result :result="result"></result>
     </div>
   </div>
@@ -67,7 +70,8 @@ export default {
         from: oneMonth()
       },
       stationError: false,
-      httpError: null
+      httpError: null,
+      loading: false
     }
   },
   computed: {
@@ -96,19 +100,26 @@ export default {
     },
     submit () {
       if (!this.hasErrors) {
+        this.loading = true;
         this.$http.get('stations', {
           params: {from: this.station, startDate: getDate(this.startDate), endDate: getDate(this.endDate)}
         }).then(
-          response => {this.results = response.body},
+          response => {
+            this.loading = false;
+            this.results = response.body
+          },
           error => {
             this.httpError = error.statusText;
-            setTimeout(() => this.httpError = null, 3000);
+            this.loading = false;
             this.results = defaultResponse;
           });
       }
     },
     inputBlur () {
       this.stationError = this.station && stations.indexOf(this.station) == -1
+    },
+    dismiss() {
+      this.httpError = null;
     }
   },
   components: {datepicker, result}
@@ -116,11 +127,31 @@ export default {
 </script>
 
 <style>
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 1s
+  .fade-leave-active {
+    transition: 1s
   }
 
-  .fade-enter, .fade-leave-to {
-    opacity: 0
+  .fade-leave-to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  .loader {
+    border: 16px solid #eceeef;
+    border-top: 16px solid #0275d8;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    margin: auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 </style>
