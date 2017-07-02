@@ -31,12 +31,13 @@
         Rechercher !
       </button>
     </div>
-    <transition name="fade">
+    <last-update class="mb-4"></last-update>
+    <transition name="slide">
       <div v-if="httpError" class="alert alert-danger mb-4">Oups ! {{httpError}}
         <button class="close" aria-label="Close" @click="dismiss"><span aria-hidden="true">&times;</span></button>
       </div>
     </transition>
-    <div v-show="loading" class="loader mb-4"></div>
+    <loader v-show="loading" size="70px" class="mb-4 mx-auto"></loader>
     <div v-show="!loading" v-for="result in results">
       <result :result="result"></result>
     </div>
@@ -48,6 +49,8 @@ import stations from './../../../json/stations.json'
 import defaultResponse from './../../../json/response.json'
 import datepicker from 'vuejs-datepicker'
 import result from './Result.vue'
+import lastUpdate from './LastUpdate.vue'
+import loader from './Loader.vue'
 
 let oneMonth = () => new Date(new Date().setMonth((new Date().getMonth() + 1) % 11));
 let today = () => new Date(new Date().setHours(0, 0, 0, 0));
@@ -111,7 +114,7 @@ export default {
           error => {
             this.httpError = error.statusText;
             this.loading = false;
-            this.results = defaultResponse;
+            if(error.status == 404) this.results = defaultResponse;
           });
       }
     },
@@ -122,36 +125,17 @@ export default {
       this.httpError = null;
     }
   },
-  components: {datepicker, result}
+  components: {datepicker, result, lastUpdate, loader}
 }
 </script>
 
 <style>
-  .fade-leave-active {
+  .slide-leave-active {
     transition: 1s
   }
 
-  .fade-leave-to {
+  .slide-leave-to {
     opacity: 0;
     transform: translateX(100%);
-  }
-
-  .loader {
-    border: 16px solid #eceeef;
-    border-top: 16px solid #0275d8;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-    margin: auto;
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
   }
 </style>

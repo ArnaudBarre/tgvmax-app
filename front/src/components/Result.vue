@@ -5,10 +5,10 @@
         <h4 class="card-title">{{result.station}}</h4>
       </div>
       <div class="col-6 col-md-4">
-        <scheduleList title="Aller" :list="result.go"></scheduleList>
+        <schedule-list title="Aller" :list="result.go"></schedule-list>
       </div>
       <div class="col-6 col-md-4">
-        <scheduleList title="Retour" :list="result.back"></scheduleList>
+        <schedule-list title="Retour" :list="result.back"></schedule-list>
       </div>
     </div>
   </div>

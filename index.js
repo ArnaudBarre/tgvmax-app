@@ -10,6 +10,13 @@ app.use(express.static(__dirname + '/front'));
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
+app.get('/lastUpdate', (req, res) => {
+  request(api, (error, response, body) => {
+    if (error) error.statusCode ? res.sendStatus(error.statusCode) : res.sendStatus(500);
+    else res.send(JSON.parse(body).records[0].record_timestamp);
+  });
+});
+
 let groupData = (body, key) => {
   return JSON.parse(body).records
              .map(r => r.fields)
@@ -24,8 +31,8 @@ app.get('/stations', (req, res) => {
   let dataGo, dataBack;
   let requests = 2;
   let combine = () => {
-    if (dataGo.error) res.sendStatus(dataGo.error.statusCode);
-    if (dataBack.error) res.sendStatus(dataBack.error.statusCode);
+    if (dataGo.error) dataGo.error.statusCode ? res.sendStatus(dataGo.error.statusCode) : res.sendStatus(500);
+    if (dataBack.error) dataBack.error.statusCode ? res.sendStatus(dataBack.error.statusCode) : res.sendStatus(500);
     let common = [];
     Object.keys(dataGo).forEach(station => {
       if (dataBack.hasOwnProperty(station)) common.push({station, go: [...dataGo[station]], back:[...dataBack[station]]})
