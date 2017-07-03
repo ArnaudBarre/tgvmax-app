@@ -4,7 +4,8 @@
   "private": true,
   "author": "Arnaud Barré <arnaudbarremn@gmail.com>",
   "scripts": {
-    "start": "cd front && npm install --dev && npm run build && cd .. && node index"
+    "postinstall": "cd front && npm install --dev && npm run build && cd .. ",
+    "start": "node index"
   },
   "dependencies": {
     "express": "^4.15.3",
