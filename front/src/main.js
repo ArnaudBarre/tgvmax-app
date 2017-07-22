@@ -3,11 +3,11 @@ import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import App from './components/App.vue'
 import Home from './components/Home.vue'
-import VTooltip from 'v-tooltip'
+import Vuetify from 'vuetify'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
-Vue.use(VTooltip);
+Vue.use(Vuetify)
 
 new Vue({
   el: '#app',

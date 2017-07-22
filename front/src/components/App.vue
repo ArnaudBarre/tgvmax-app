@@ -1,60 +1,62 @@
 <template>
-  <div class="container">
-    <div class="my-4">
-      <div class="form-group row">
-        <label class="col-md-1 col-form-label">Depuis</label>
-        <div class="col-md-11" :class="{'has-danger': stationError}">
-          <input type="text" v-model="station" class="form-control" placeholder="Gare TGV de départ"
-                 @input="search($event.target.value)" @keyup.enter="selectFirst" @blur="inputBlur" autofocus>
-          <div class="list-group">
-            <button class="list-group-item list-group-item-action" v-for="station in filterStations"
-                    @click="selected(station)">
-              {{ station }}
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label class="col-md-1 col-form-label">Aller</label>
-        <div class="col-md-5">
-          <datepicker v-model="startDate" input-class="form-control" language="fr" :monday-first="true"
-                      placeholder="Sélectionnez un jour" :disabled="disabledStart"
-                      @selected="startSelected"></datepicker>
-        </div>
-        <label class="col-md-1 col-form-label">Retour</label>
-        <div class="col-md-5">
-          <datepicker v-model="endDate" input-class="form-control" language="fr" :monday-first="true"
-                      placeholder="Sélectionnez un jour" :disabled="disabledEnd" @selected="endSelected"></datepicker>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block form-group" :class="{disabled: hasErrors}" @click="submit">
-        Rechercher !
-      </button>
-    </div>
-    <last-update class="mb-4"></last-update>
-    <transition name="slide">
-      <div v-if="httpError" class="alert alert-danger mb-4">Oups ! {{httpError}}
-        <button class="close" aria-label="Close" @click="dismiss"><span aria-hidden="true">&times;</span></button>
-      </div>
-    </transition>
-    <loader v-show="loading" size="70px" class="mb-4 mx-auto"></loader>
-    <div v-show="!loading" v-for="result in results">
-      <result :result="result"></result>
-    </div>
-  </div>
+  <v-container>
+    <v-layout row>
+      <v-flex>
+        <v-text-field label="Gare TGV de départ" prepend-icon="directions_transit" v-model="station" @input="search"
+                      @keyup.enter.native="selectFirst" @blur="inputBlur" autofocus></v-text-field>
+        <v-list class="py-0">
+          <v-list-tile v-for="station in filterStations" :key="station">
+            <v-list-tile-content @click="selected(station)">
+              <v-list-tile-title>{{station}}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap>
+      <v-flex xs12 sm6>
+        <v-menu :close-on-content-click="true" transition="scale-transition" offset-y full-width :nudge-left="40"
+                max-width="290px">
+          <v-text-field slot="activator" label="Aller" v-model="startDateDisplay" prepend-icon="event"
+                        readonly></v-text-field>
+          <v-date-picker v-model="startDate" no-title scrollable first-day-of-week="1" locale="fr"
+                         :allowed-dates="allowedStart" @click.native="startSelected"
+                         :date-format="date => new Date(date).toDateString()"
+                         :formatted-value.sync="startDateDisplay"></v-date-picker>
+        </v-menu>
+      </v-flex>
+      <v-flex xs12 sm6>
+        <v-menu :close-on-content-click="true" transition="scale-transition" offset-y full-width :nudge-left="40"
+                max-width="290px">
+          <v-text-field slot="activator" label="Retour" v-model="endDateDisplay" prepend-icon="event"
+                        readonly></v-text-field>
+          <v-date-picker v-model="endDate" no-title scrollable first-day-of-week="1" locale="fr"
+                         :allowed-dates="allowedEnd" @click.native="endSelected"
+                         :date-format="date => new Date(date).toDateString()"
+                         :formatted-value.sync="endDateDisplay"></v-date-picker>
+        </v-menu>
+      </v-flex>
+    </v-layout>
+    <v-btn primary block @click.native="submit" :loading="loading" :disabled="hasErrors">Rechercher !</v-btn>
+    <last-update class="my-3"></last-update>
+    <v-alert error dismissible v-model="httpError" class="mb-4" transition="scale-transition">Oups !
+      {{httpErrorText}}
+    </v-alert>
+    <v-layout justify-center>
+      <v-progress-circular v-show="loading" indeterminate :size="60" class="mb-4 primary--text"></v-progress-circular>
+    </v-layout>
+    <result v-show="!loading" v-for="result in results" :result="result" :key="result.station" class="mb-3"></result>
+  </v-container>
 </template>
 
 <script>
 import stations from './../../../json/stations.json'
 import defaultResponse from './../../../json/response.json'
-import datepicker from 'vuejs-datepicker'
 import result from './Result.vue'
 import lastUpdate from './LastUpdate.vue'
-import loader from './Loader.vue'
 
 let oneMonth = () => new Date(new Date().setMonth((new Date().getMonth() + 1) % 11));
 let today = () => new Date(new Date().setHours(0, 0, 0, 0));
-let getDate = date => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 export default {
   data () {
@@ -62,24 +64,27 @@ export default {
       station: '',
       startDate: null,
       endDate: null,
+      startDateDisplay: null,
+      endDateDisplay: null,
       filterStations: [],
       results: [],
-      disabledStart: {
-        to: today(),
-        from: oneMonth()
+      allowedStart: {
+        min: today(),
+        max: oneMonth()
       },
-      disabledEnd: {
-        to: today(),
-        from: oneMonth()
+      allowedEnd: {
+        min: today(),
+        max: oneMonth()
       },
       stationError: false,
-      httpError: null,
+      httpError: false,
+      httpErrorText: '',
       loading: false
     }
   },
   computed: {
     hasErrors () {
-      return !(this.startDate && this.endDate && stations.indexOf(this.station) != -1)
+      return !(this.startDate && this.endDate && stations.indexOf(this.station) !== -1)
     }
   },
   methods: {
@@ -95,47 +100,37 @@ export default {
     selectFirst () {
       if (this.filterStations.length) this.selected(this.filterStations[0])
     },
-    startSelected (date) {
-      this.disabledEnd.to = date;
+    startSelected () {
+      if (this.startDate) this.allowedEnd.min = this.startDate;
     },
-    endSelected (date) {
-      this.disabledStart.from = date;
+    endSelected () {
+      if (this.endDate) this.allowedStart.max = this.endDate;
     },
     submit () {
       if (!this.hasErrors) {
         this.loading = true;
         this.$http.get('stations', {
-          params: {from: this.station, startDate: getDate(this.startDate), endDate: getDate(this.endDate)}
+          params: {from: this.station, startDate: this.startDate, endDate: this.endDate}
         }).then(
           response => {
             this.loading = false;
             this.results = response.body
           },
           error => {
-            this.httpError = error.statusText;
+            this.httpErrorText = error.statusText;
+            this.httpError = true;
             this.loading = false;
-            if(error.status == 404) this.results = defaultResponse;
+            if (error.status === 404) this.results = defaultResponse;
           });
       }
     },
     inputBlur () {
-      this.stationError = this.station && stations.indexOf(this.station) == -1
+      this.stationError = this.station && stations.indexOf(this.station) === -1
     },
     dismiss() {
       this.httpError = null;
     }
   },
-  components: {datepicker, result, lastUpdate, loader}
+  components: {result, lastUpdate}
 }
 </script>
-
-<style>
-  .slide-leave-active {
-    transition: 1s
-  }
-
-  .slide-leave-to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-</style>

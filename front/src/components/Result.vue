@@ -1,17 +1,25 @@
 <template>
-  <div class="card card-outline-primary mb-4">
-    <div class="card-block row">
-      <div class="col-12 col-md-4">
-        <h4 class="card-title">{{result.station}}</h4>
-      </div>
-      <div class="col-6 col-md-4">
-        <schedule-list title="Aller" :list="result.go"></schedule-list>
-      </div>
-      <div class="col-6 col-md-4">
-        <schedule-list title="Retour" :list="result.back"></schedule-list>
-      </div>
-    </div>
-  </div>
+  <v-card>
+    <v-card-title class="primary white--text">
+      <div class="headline">{{result.station}}</div>
+    </v-card-title>
+    <v-card-text>
+      <v-layout align-center row wrap>
+        <v-flex xs6 sm3 order-sm1>
+          <div class="text-muted title text-xs-center py-2">Aller{{result.go.length > 1 ? 's' : ''}}</div>
+        </v-flex>
+        <v-flex xs6 sm3 order-sm3>
+          <div class="text-muted title text-xs-center py-2">Retour{{result.back.length > 1 ? 's' : ''}}</div>
+        </v-flex>
+        <v-flex xs6 sm3 order-sm2>
+          <schedule-list :list="result.go"></schedule-list>
+        </v-flex>
+        <v-flex xs6 sm3 order-sm4>
+          <schedule-list :list="result.back"></schedule-list>
+        </v-flex>
+      </v-layout>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

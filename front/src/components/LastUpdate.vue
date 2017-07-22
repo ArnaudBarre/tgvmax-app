@@ -1,15 +1,15 @@
 <template>
-  <div class="d-flex flex-row align-items-center">
-    <div class="text-muted mr-2">Dernière mise à jour : {{lastUpdate}}</div>
-    <loader v-show="!lastUpdate" size="24px" class="mr-2"></loader>
-    <span class="badge badge-info" v-tooltip="{content: 'La SNCF met à jour ses données publiques toutes les 24 heures',
-          placement: 'right', trigger:'hover click', classes: 'tooltip-right'}">?</span>
+  <div class="align">
+    <span class="grey--text mr-2">Dernière mise à jour : {{lastUpdate}}</span>
+    <v-progress-circular v-show="!lastUpdate" indeterminate :size="24" class="primary--text mr-2"></v-progress-circular>
+    <span v-tooltip:right="{html: 'La SNCF met à jour ses données publiques toutes les 24 heures'}"
+          class="hidden-sm-and-down">
+      <v-icon>help</v-icon>
+    </span>
   </div>
 </template>
 
 <script>
-import loader from './Loader.vue'
-
 export default {
   data () {
     return {
@@ -22,19 +22,13 @@ export default {
         {month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}),
       error => this.lastUpdate = error.statusText
     )
-  },
-  components: {loader}
+  }
 }
 </script>
 
 <style>
-  /* Bootstrap 4 - v-tooltip compatibility fix */
-  .tooltip[aria-hidden='false'] {
-    opacity: 1;
-  }
-
-  /* one line tooltip */
-  .tooltip-inner {
-    max-width: none;
+  .align {
+    display: flex;
+    align-items: center;
   }
 </style>
