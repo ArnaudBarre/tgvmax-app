@@ -11,15 +11,15 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       lastUpdate: ''
     }
   },
   created: function () {
     this.$http.get('lastUpdate').then(
-      response => this.lastUpdate = new Date(Date.parse(response.body)).toLocaleString('fr-FR',
-        {month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}),
+      response => this.lastUpdate = new Date(Date.parse(response.body))
+        .toLocaleString('fr-FR', {month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}),
       error => this.lastUpdate = error.statusText
     )
   }

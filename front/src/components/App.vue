@@ -50,8 +50,7 @@
 </template>
 
 <script>
-import stations from './../../../json/stations.json'
-import defaultResponse from './../../../json/response.json'
+import stations from './../../../stations.json'
 import result from './Result.vue'
 import lastUpdate from './LastUpdate.vue'
 
@@ -120,7 +119,6 @@ export default {
             this.httpErrorText = error.statusText;
             this.httpError = true;
             this.loading = false;
-            if (error.status === 404) this.results = defaultResponse;
           });
       }
     },

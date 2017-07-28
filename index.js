@@ -1,6 +1,6 @@
 let express = require('express');
 let request = require('request');
-let stations = require('./json/stations.json');
+let stations = require('./stations.json');
 
 const api = 'https://ressources.data.sncf.com/api/records/1.0/search/?dataset=tgvmax';
 
@@ -46,7 +46,7 @@ app.get('/stations', (req, res) => {
     }
   }, (error, response, body) => {
     dataGo = error ? {error} : groupData(body, 'destination');
-    if (--requests == 0) combine()
+    if (--requests === 0) combine()
   });
   request({
     url: api,
@@ -55,7 +55,7 @@ app.get('/stations', (req, res) => {
     }
   }, (error, response, body) => {
     dataBack = error ? {error} : groupData(body, 'origine');
-    if (--requests == 0) combine()
+    if (--requests === 0) combine()
   });
 });
 
