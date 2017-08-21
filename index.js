@@ -22,7 +22,7 @@ let groupData = (body, key) => {
              .map(r => r.fields)
              .sort((a, b) => a.heure_depart.replace(":", "") - b.heure_depart.replace(":", ""))
              .reduce((acc, val) => {
-               (acc[val[key]] = acc[val[key]] || new Set()).add(val.heure_depart + ' -> ' + val.heure_arrivee);
+               (acc[val[key]] = acc[val[key]] || new Set()).add(valk.heure_depart + ' -> ' + val.heure_arrivee);
                return acc;
              }, {});
 };
@@ -42,7 +42,7 @@ app.get('/stations', (req, res) => {
   request({
     url: api,
     qs: {
-      rows: 1000, 'refine.date': req.query.startDate, 'refine.od_happy_card': 'OUI', 'refine.origine': req.query.from
+      rows: 1000, 'refine.date': req.query.startDate, 'refine.disponibilita_c_de_places_tgv_max': 'OUI', 'refine.origine': req.query.from
     }
   }, (error, response, body) => {
     dataGo = error ? {error} : groupData(body, 'destination');
@@ -51,7 +51,7 @@ app.get('/stations', (req, res) => {
   request({
     url: api,
     qs: {
-      rows: 1000, 'refine.date': req.query.endDate, 'refine.od_happy_card': 'OUI', 'refine.destination': req.query.from
+      rows: 1000, 'refine.date': req.query.endDate, 'refine.disponibilita_c_de_places_tgv_max': 'OUI', 'refine.destination': req.query.from
     }
   }, (error, response, body) => {
     dataBack = error ? {error} : groupData(body, 'origine');
