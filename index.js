@@ -22,7 +22,7 @@ let groupData = (body, key) => {
              .map(r => r.fields)
              .sort((a, b) => a.heure_depart.replace(":", "") - b.heure_depart.replace(":", ""))
              .reduce((acc, val) => {
-               (acc[val[key]] = acc[val[key]] || new Set()).add(valk.heure_depart + ' -> ' + val.heure_arrivee);
+               (acc[val[key]] = acc[val[key]] || new Set()).add(val.heure_depart + ' -> ' + val.heure_arrivee);
                return acc;
              }, {});
 };
