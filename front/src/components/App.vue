@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import stations from './../../stations.json';
+import stations from './../../../stations.json';
 import result from './Result.vue';
 import lastUpdate from './LastUpdate.vue';
 import axios from 'axios';

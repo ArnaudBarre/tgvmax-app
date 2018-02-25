@@ -5,11 +5,38 @@
   <meta charset="utf-8">
   <title>TGVmax weekends</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link rel="icon" href="src/assets/favicon.ico" type="image/x-icon">
+  <style>
+    @keyframes slide {
+      from {
+        margin-left: -80px;
+      }
+      to {
+        margin-left: 100%;
+      }
+    }
+
+    .splashScreen {
+      margin-top: 40vh;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div class="splashScreen">
+      <div style="display: inline-block; overflow-x: hidden">
+        <h2>TGVmax weekends</h2>
+        <img src="src/assets/train.svg" height="80px" style="animation: slide 2s linear infinite">
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- load icons -->
+  <i class="material-icons"></i>
   <script src="dist/build.js"></script>
 </body>
 
