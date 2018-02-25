@@ -1,61 +1,57 @@
 let express = require('express');
-let request = require('request');
+let axios = require('axios');
+let compression = require('compression')
 let stations = require('./stations.json');
 
 const api = 'https://ressources.data.sncf.com/api/records/1.0/search/?dataset=tgvmax';
 
 let app = express();
-
+app.use(compression());
 app.use(express.static(__dirname + '/front'));
-
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
 app.get('/lastUpdate', (req, res) => {
-  request(api, (error, response, body) => {
-    if (error) error.statusCode ? res.sendStatus(error.statusCode) : res.sendStatus(500);
-    else res.send(JSON.parse(body).records[0].record_timestamp);
-  });
+  axios(api)
+    .then(response => res.send(response.data.records[0].record_timestamp))
+    .catch(error => error.statusCode ? res.sendStatus(error.statusCode) : res.sendStatus(500));
 });
 
-let groupData = (body, key) => {
-  return JSON.parse(body).records
-             .map(r => r.fields)
-             .sort((a, b) => a.heure_depart.replace(":", "") - b.heure_depart.replace(":", ""))
-             .reduce((acc, val) => {
-               (acc[val[key]] = acc[val[key]] || new Set()).add(val.heure_depart + ' -> ' + val.heure_arrivee);
-               return acc;
-             }, {});
+let groupData = (data, key) => {
+  return data.records
+    .map(r => r.fields)
+    .sort((a, b) => a.heure_depart.replace(":", "") - b.heure_depart.replace(":", ""))
+    .map(fields => ({ city: fields[key], hours: `${fields.heure_depart} -> ${fields.heure_arrivee}` }))
+    .reduce((acc, val) => {
+      (acc[val.city] = acc[val.city] || new Set()).add(val.hours);
+      return acc;
+    }, {});
 };
 
+let callApi = (date, orgine, destination) => axios.get(api, {
+  params: {
+    rows: 1000,
+    'refine.date': date,
+    'refine.od_happy_card': 'OUI',
+    'refine.origine': orgine,
+    'refine.destination': destination,
+  }
+});
+
 app.get('/stations', (req, res) => {
-  let dataGo, dataBack;
-  let requests = 2;
-  let combine = () => {
-    if (dataGo.error) dataGo.error.statusCode ? res.sendStatus(dataGo.error.statusCode) : res.sendStatus(500);
-    if (dataBack.error) dataBack.error.statusCode ? res.sendStatus(dataBack.error.statusCode) : res.sendStatus(500);
-    let common = [];
+  Promise.all([
+    callApi(req.query.startDate, req.query.from, null),
+    callApi(req.query.endDate, null, req.query.from),
+  ]).then(responses => {
+    let dataGo = groupData(responses[0].data, 'destination')
+    let dataBack = groupData(responses[1].data, 'origine')
+    let commons = [];
     Object.keys(dataGo).forEach(station => {
-      if (dataBack.hasOwnProperty(station)) common.push({station, go: [...dataGo[station]], back:[...dataBack[station]]})
+      if (dataBack.hasOwnProperty(station))
+        commons.push({ station, go: [...dataGo[station]], back: [...dataBack[station]] })
     });
-    res.send(common);
-  };
-  request({
-    url: api,
-    qs: {
-      rows: 1000, 'refine.date': req.query.startDate, 'refine.disponibilita_c_de_places_tgv_max': 'OUI', 'refine.origine': req.query.from
-    }
-  }, (error, response, body) => {
-    dataGo = error ? {error} : groupData(body, 'destination');
-    if (--requests === 0) combine()
-  });
-  request({
-    url: api,
-    qs: {
-      rows: 1000, 'refine.date': req.query.endDate, 'refine.disponibilita_c_de_places_tgv_max': 'OUI', 'refine.destination': req.query.from
-    }
-  }, (error, response, body) => {
-    dataBack = error ? {error} : groupData(body, 'origine');
-    if (--requests === 0) combine()
+    res.send(commons);
+  }).catch(error => {
+    res.sendStatus(error.statusCode ? error.statusCode : 500);
   });
 });
 

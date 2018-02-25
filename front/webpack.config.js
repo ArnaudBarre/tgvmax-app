@@ -11,6 +11,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ],
+      }, {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -30,24 +36,33 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.styl$/,
+        loader: ['style-loader', 'css-loader', 'stylus-loader']
       }
     ]
   },
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
-    }
+    },
+    extensions: ['*', '.js', '.vue', '.json']
   },
   devServer: {
     historyApiFallback: true,
     noInfo: true,
+    overlay: true,
     proxy: {
-      "**": "http://localhost:3000"
+      '**': 'http://localhost:3000'
     }
   },
   performance: {
     hints: false
   },
+  plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/)
+  ],
   devtool: '#eval-source-map'
 }
 

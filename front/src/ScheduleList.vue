@@ -14,13 +14,13 @@
 <script>
 export default {
   props: ['list'],
-  data () {
+  data() {
     return {
       hide: true
     }
   },
   computed: {
-    schedules () {
+    schedules() {
       return this.hide ? this.list.slice(0, this.list.length === 3 ? 3 : 2) : this.list
     }
   }

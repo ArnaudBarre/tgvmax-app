@@ -27,6 +27,6 @@ import scheduleList from './ScheduleList.vue'
 
 export default {
   props: ['result'],
-  components: {scheduleList}
+  components: { scheduleList }
 }
 </script>
