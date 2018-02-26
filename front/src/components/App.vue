@@ -66,7 +66,7 @@ export default {
     submit() {
       this.loading = true;
       this.noResults = false;
-      axios.get('stations', {
+      axios.get('search', {
         params: {
           from: this.station,
           startDate: this.startDate,

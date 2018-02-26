@@ -37,7 +37,7 @@ let callApi = (date, orgine, destination) => axios.get(api, {
   }
 });
 
-app.get('/stations', (req, res) => {
+app.get('/search', (req, res) => {
   Promise.all([
     callApi(req.query.startDate, req.query.from, null),
     callApi(req.query.endDate, null, req.query.from),
@@ -50,9 +50,7 @@ app.get('/stations', (req, res) => {
         commons.push({ station, go: [...dataGo[station]], back: [...dataBack[station]] })
     });
     res.send(commons);
-  }).catch(error => {
-    res.sendStatus(error.statusCode ? error.statusCode : 500);
-  });
+  }).catch(error => res.sendStatus(error.statusCode ? error.statusCode : 500));
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('App running at http://localhost:3000'));
