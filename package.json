@@ -5,11 +5,15 @@
   "author": "Arnaud Barré <arnaudbarremn@gmail.com>",
   "scripts": {
     "postinstall": "cd front && npm i && npm i --only=dev && npm run build",
-    "start": "node index"
+    "start": "node index",
+    "test": "node tests"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "compression": "^1.7.2",
     "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "puppeteer": "^1.1.1"
   }
 }
