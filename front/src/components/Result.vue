@@ -12,13 +12,18 @@
           <div class="text-muted title text-xs-center py-2">Retour{{result.back.length > 1 ? 's' : ''}}</div>
         </v-flex>
         <v-flex xs6 sm3 order-sm2>
-          <schedule-list :list="result.go"></schedule-list>
+          <schedule-list :hide="hide" :list="result.go"></schedule-list>
         </v-flex>
         <v-flex xs6 sm3 order-sm4>
-          <schedule-list :list="result.back"></schedule-list>
+          <schedule-list :hide="hide" :list="result.back"></schedule-list>
         </v-flex>
       </v-layout>
     </v-card-text>
+    <v-card-actions class="py-0" v-if="result.go.length > 3 || result.back.length > 3">
+      <v-btn class="mx-auto" icon @click.native="hide = !hide">
+        <v-icon class="primary--text">{{hide ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}}</v-icon>
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -27,6 +32,11 @@ import scheduleList from './ScheduleList.vue'
 
 export default {
   props: ['result'],
-  components: { scheduleList }
+  components: { scheduleList },
+  data() {
+    return {
+      hide: true
+    }
+  },
 }
 </script>
