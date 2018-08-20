@@ -7,6 +7,7 @@ import Vuetify from 'vuetify/es5/components/Vuetify';
 import VApp from 'vuetify/es5/components/VApp';
 import transitions from 'vuetify/es5/components/transitions';
 import VSelect from 'vuetify/es5/components/VSelect';
+import VAutocomplete from 'vuetify/es5/components/VAutocomplete';
 import VAlert from 'vuetify/es5/components/VAlert';
 import VProgressCircular from 'vuetify/es5/components/VProgressCircular';
 import VMenu from 'vuetify/es5/components/VMenu';
@@ -22,6 +23,7 @@ Vue.use(Vuetify, {
   components: {
     VApp,
     VSelect,
+    VAutocomplete,
     VAlert,
     VProgressCircular,
     VGrid,

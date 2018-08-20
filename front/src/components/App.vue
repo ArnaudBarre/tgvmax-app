@@ -4,7 +4,7 @@
       <v-container fluid>
         <v-layout justify-center>
           <v-flex lg6 md8 sm10>
-            <v-select :items="stations" v-model="station" label="Gare TGV de départ" prepend-icon="directions_transit" autocomplete autofocus></v-select>
+            <v-autocomplete :items="stations" v-model="station" label="Gare TGV de départ" prepend-icon="directions_transit" no-data-text="Aucune station trouvée" autofocus></v-autocomplete>
             <v-layout row>
               <v-flex mr-2>
                 <v-menu :close-on-content-click="true" transition="scale-transition" full-width offset-y max-width="290px">

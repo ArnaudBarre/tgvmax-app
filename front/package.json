@@ -1,16 +1,16 @@
 {
   "name": "tgvmax-weekends",
-  "version": "1.0.0",
-  "author": "Arnaud Barré <arnaudbarremn@gmail.com>",
+  "version": "2.0.0",
+  "author": "Arnaud Barré <arnaud.barre72@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "start": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode production"
   },
   "dependencies": {
-    "moment": "^2.20.1",
-    "vue": "^2.5.13",
-    "vuetify": "^1.0.3"
+    "moment": "^2.22.2",
+    "vue": "^2.5.17",
+    "vuetify": "^1.1.13"
   },
   "babel": {
     "presets": [
@@ -23,18 +23,19 @@
     ]
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
-    "cross-env": "^5.0.5",
-    "css-loader": "^0.28.7",
-    "file-loader": "^1.1.4",
-    "style-loader": "^0.20.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
+    "style-loader": "^0.22.1",
     "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1",
-    "vue-loader": "^13.0.5",
-    "vue-template-compiler": "^2.4.4",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "stylus-loader": "^3.0.2",
+    "vue-loader": "^15.4.0",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.16.5",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   }
 }
