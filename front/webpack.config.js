@@ -50,6 +50,6 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr.js/),
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
   ],
 }
