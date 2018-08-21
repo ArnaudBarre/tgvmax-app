@@ -4,16 +4,16 @@
       <v-container fluid>
         <v-layout justify-center>
           <v-flex lg6 md8 sm10>
-            <v-autocomplete :items="stations" v-model="station" label="Gare TGV de départ" prepend-icon="directions_transit" no-data-text="Aucune station trouvée" autofocus></v-autocomplete>
+            <v-autocomplete :items="stationsNames" v-model="station" label="Gare TGV de départ" prepend-icon="directions_transit" no-data-text="Aucune station trouvée" :z-index="1001" autofocus></v-autocomplete>
             <v-layout row>
               <v-flex mr-2>
-                <v-menu :close-on-content-click="true" transition="scale-transition" full-width offset-y max-width="290px">
+                <v-menu :close-on-content-click="true" transition="scale-transition" full-width :z-index="1001" offset-y max-width="290px">
                   <v-text-field slot="activator" label="Aller" :value="displayDate(startDate)" prepend-icon="event" readonly></v-text-field>
                   <v-date-picker v-model="startDate" :min="minDate" :max="maxDate" no-title scrollable first-day-of-week="1" locale="fr"></v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex ml-2>
-                <v-menu :close-on-content-click="true" transition="scale-transition" full-width offset-y max-width="290px">
+                <v-menu :close-on-content-click="true" transition="scale-transition" full-width :z-index="1001" offset-y max-width="290px">
                   <v-text-field slot="activator" label="Retour" :value="displayDate(endDate)" prepend-icon="event" readonly></v-text-field>
                   <v-date-picker v-model="endDate" :min="minDate" :max="maxDate" no-title scrollable first-day-of-week="1" locale="fr"></v-date-picker>
                 </v-menu>
@@ -27,6 +27,12 @@
               <span v-show="noResults" class="display-1">Aucun voyage disponible ☹️</span>
             </v-layout>
             <result v-show="!loading" v-for="result in results" :result="result" :key="result.station" class="mb-3"></result>
+            <v-layout justify-center my-2>
+              <span class="subheading">Gares TGV :</span>
+            </v-layout>
+            <v-layout row>
+              <stations-map :stations="stations"></stations-map>
+            </v-layout>
           </v-flex>
         </v-layout>
       </v-container>
@@ -38,6 +44,7 @@
 import stations from './../../../stations.json';
 import result from './Result.vue';
 import lastUpdate from './LastUpdate.vue';
+import stationsMap from './StationsMap.vue';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -45,7 +52,8 @@ export default {
   data() {
     return {
       station: '',
-      stations: stations,
+      stations,
+      stationsNames: stations.map(s => s.name),
       startDate: null,
       endDate: null,
       results: [],
@@ -59,7 +67,7 @@ export default {
   },
   computed: {
     hasErrors() {
-      return !this.startDate || !this.endDate || stations.indexOf(this.station) === -1;
+      return !this.startDate || !this.endDate || this.stationsNames.indexOf(this.station) === -1;
     }
   },
   methods: {
@@ -86,6 +94,6 @@ export default {
       return date ? moment(date).format("ddd D MMM") : '';
     }
   },
-  components: { result, lastUpdate }
+  components: { result, lastUpdate, stationsMap }
 };
 </script>
