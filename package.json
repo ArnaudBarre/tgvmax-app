@@ -1,19 +1,21 @@
 {
-  "name": "tgvmax-weekends",
-  "version": "1.1.0",
+  "name": "tgvmax-app",
+  "version": "2.0.0",
   "private": true,
   "author": "Arnaud Barré <arnaud.barre72@gmail.com>",
   "scripts": {
     "postinstall": "cd front && npm i && npm i --only=dev && npm run build",
     "start": "node index",
-    "test": "node tests"
+    "dev": "nodemon"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "compression": "^1.7.3",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "moment": "^2.22.2"
   },
   "devDependencies": {
+    "nodemon": "^1.18.3",
     "puppeteer": "^1.7.0"
   }
 }

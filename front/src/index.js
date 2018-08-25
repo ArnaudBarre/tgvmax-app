@@ -1,15 +1,13 @@
-import Vue from 'vue'
-import App from './components/App.vue'
-import moment from 'moment'
+import Vue from 'vue';
+import App from './components/App.vue';
+import * as VueGoogleMaps from 'vue2-google-maps';
 
-import '../node_modules/vuetify/src/stylus/app.styl'
+import '../node_modules/vuetify/src/stylus/app.styl';
 import Vuetify from 'vuetify/es5/components/Vuetify';
 import VApp from 'vuetify/es5/components/VApp';
-import transitions from 'vuetify/es5/components/transitions';
 import VSelect from 'vuetify/es5/components/VSelect';
 import VAutocomplete from 'vuetify/es5/components/VAutocomplete';
 import VAlert from 'vuetify/es5/components/VAlert';
-import VProgressCircular from 'vuetify/es5/components/VProgressCircular';
 import VMenu from 'vuetify/es5/components/VMenu';
 import VGrid from 'vuetify/es5/components/VGrid';
 import VDatePicker from 'vuetify/es5/components/VDatePicker';
@@ -25,7 +23,6 @@ Vue.use(Vuetify, {
     VSelect,
     VAutocomplete,
     VAlert,
-    VProgressCircular,
     VGrid,
     VMenu,
     VDatePicker,
@@ -33,14 +30,17 @@ Vue.use(Vuetify, {
     VCard,
     VIcon,
     VBtn,
-    transitions,
-    VTooltip
-  }
+    VTooltip,
+  },
 });
 
-moment.locale('fr')
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyAsq0jBT7iBfw9b2_tAsHbkUuY532ZY9wA',
+  },
+});
 
 new Vue({
   el: '#app',
-  render: h => h(App)
-})
+  render: h => h(App),
+});

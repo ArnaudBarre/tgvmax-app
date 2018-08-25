@@ -1,4 +1,3 @@
-const webpack = require('webpack')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
@@ -49,7 +48,6 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr.js/),
     new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
   ],
 }
