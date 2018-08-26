@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import App from './components/App.vue';
+import Vuex from 'vuex';
 import * as VueGoogleMaps from 'vue2-google-maps';
 
 import '../node_modules/vuetify/src/stylus/app.styl';
@@ -15,7 +15,19 @@ import VTextField from 'vuetify/es5/components/VTextField';
 import VCard from 'vuetify/es5/components/VCard';
 import VIcon from 'vuetify/es5/components/VIcon';
 import VBtn from 'vuetify/es5/components/VBtn';
+import VToolbar from 'vuetify/es5/components/VToolbar';
 import VTooltip from 'vuetify/es5/components/VTooltip';
+
+import App from './components/App.vue';
+import store from './store';
+
+Vue.use(Vuex);
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyAsq0jBT7iBfw9b2_tAsHbkUuY532ZY9wA',
+  },
+});
 
 Vue.use(Vuetify, {
   components: {
@@ -30,17 +42,13 @@ Vue.use(Vuetify, {
     VCard,
     VIcon,
     VBtn,
+    VToolbar,
     VTooltip,
-  },
-});
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyAsq0jBT7iBfw9b2_tAsHbkUuY532ZY9wA',
   },
 });
 
 new Vue({
   el: '#app',
+  store: new Vuex.Store(store),
   render: h => h(App),
 });

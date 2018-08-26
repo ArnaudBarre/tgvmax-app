@@ -1,33 +1,20 @@
 <template>
   <v-app>
     <v-content>
-      <last-update class="topRight"></last-update>
-      <toolbar class="topLeft"
-               :stations="stations"
-               v-on:startSelected="startStation = $event"
-               v-on:locate="userLocation = $event"></toolbar>
-      <app-map :stations="stations"
-               :startStation="startStation"
-               :userLocation="userLocation"></app-map>
+      <last-update class="topRight" />
+      <search class="topLeft" />
+      <app-map />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import stations from './../../../stations.json';
-import appMap from './Map.vue';
-import toolbar from './Toolbar.vue';
-import lastUpdate from './LastUpdate.vue';
+import AppMap from './Map.vue';
+import LastUpdate from './LastUpdate.vue';
+import Search from './Search/Search.vue';
 
 export default {
-  data() {
-    return {
-      stations,
-      startStation: '',
-      userLocation: undefined,
-    };
-  },
-  components: { toolbar, appMap, lastUpdate },
+  components: { Search, AppMap, LastUpdate },
 };
 </script>
 

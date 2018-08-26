@@ -18,17 +18,6 @@ app.get('/lastUpdate', (req, res) => {
     .catch(({ statusCode }) => res.sendStatus(statusCode ? statusCode : 500));
 });
 
-const groupData = (data, key) => {
-  return data.records
-    .map(r => r.fields)
-    .sort((a, b) => a.heure_depart.replace(':', '') - b.heure_depart.replace(':', ''))
-    .map(fields => ({ city: fields[key], hours: `${fields.heure_depart} -> ${fields.heure_arrivee}` }))
-    .reduce((acc, val) => {
-      (acc[val.city] = acc[val.city] || new Set()).add(val.hours);
-      return acc;
-    }, {});
-};
-
 const callApi = (date, orgine, destination) => axios.get(api, {
   params: {
     rows: 1000,
@@ -39,21 +28,31 @@ const callApi = (date, orgine, destination) => axios.get(api, {
   },
 });
 
+const timeSort = (a, b) => {
+  const diffStartTime = a.heure_depart.replace(':', '') - b.heure_depart.replace(':', '');
+  if (diffStartTime === 0) {
+    return a.heure_arrivee.replace(':', '') - b.heure_arrivee.replace(':', '');
+  } else {
+    return diffStartTime;
+  }
+};
+
+const filterResult = (value, index, array) => {
+  return array.findIndex(v => v.heure_depart === value.heure_depart) === index;
+};
+
 app.get('/search', (req, res) => {
-  Promise.all([
-    callApi(req.query.startDate, req.query.from, null),
-    callApi(req.query.endDate, null, req.query.from),
-  ]).then(([startResponse, backResponse]) => {
-    const dataGo = groupData(startResponse.data, 'destination');
-    const dataBack = groupData(backResponse.data, 'origine');
-    const commons = [];
-    Object.keys(dataGo).forEach(station => {
-      if (dataBack.hasOwnProperty(station)) {
-        commons.push({ station, go: [...dataGo[station]], back: [...dataBack[station]] });
-      }
-    });
-    res.send(commons);
-  }).catch(({ statusCode }) => res.sendStatus(statusCode ? statusCode : 500));
+  const { startDate, startStation, endStation } = req.query;
+  callApi(startDate, startStation, endStation)
+    .then(({ data }) => {
+      res.send(
+        data.records
+          .map(r => r.fields)
+          .sort(timeSort)
+          .filter(filterResult)
+          .map(fields => `${fields.heure_depart} -> ${fields.heure_arrivee}`),
+      );
+    }).catch(({ statusCode }) => res.sendStatus(statusCode ? statusCode : 500));
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('App running at http://localhost:3000'));
