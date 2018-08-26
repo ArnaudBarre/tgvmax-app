@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import CheapRuler from '../CheapRuler';
+
 export default {
   props: ['stations'],
   data() {
@@ -31,8 +33,15 @@ export default {
       if (this.waitingLocation) return;
       this.waitingLocation = true;
       navigator.geolocation.getCurrentPosition(({ coords }) => {
-        this.$emit('locate', coords);
+        const gCoords = { lat: coords.latitude, lng: coords.longitude };
+        this.$emit('locate', gCoords);
         this.waitingLocation = false;
+        const cheapRuler = new CheapRuler(gCoords.lat);
+        const nearestStation = this.stations.map(s => {
+          s.distance = cheapRuler.distance(gCoords, s.coordinates);
+          return s;
+        }).sort((a, b) => a.distance - b.distance)[0];
+        this.station = nearestStation.name;
       }, () => this.waitingLocation = false);
     },
   },

@@ -44,8 +44,8 @@ export default {
   },
   watch: {
     userLocation: function (value) {
-      this.userPosition = { lat: value.latitude, lng: value.longitude };
-      this.center = this.userPosition;
+      this.userPosition = value;
+      this.center = value;
       this.zoom = 11;
     },
     startStation: function (value) {
