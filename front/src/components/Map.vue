@@ -1,5 +1,5 @@
 <template>
-  <GmapMap :options="{ disableDefaultUI: true }"
+  <GmapMap :options="{ disableDefaultUI: true, minZoom: 6, maxZoom: 17 }"
            :center="center"
            :zoom="zoom"
            map-type-id="roadmap"
