@@ -1,9 +1,12 @@
 <template>
   <v-app>
     <v-content>
-      <last-update class="topRight" />
-      <search class="topLeft" />
-      <app-map />
+      <LastUpdate class="topRight" />
+      <v-layout class="topLeft" column>
+        <Search class="mb-3" />
+        <Results />
+      </v-layout>
+      <AppMap />
     </v-content>
   </v-app>
 </template>
@@ -12,9 +15,10 @@
 import AppMap from './Map.vue';
 import LastUpdate from './LastUpdate.vue';
 import Search from './Search/Search.vue';
+import Results from './Results/Results.vue';
 
 export default {
-  components: { Search, AppMap, LastUpdate },
+  components: { Search, AppMap, Results, LastUpdate },
 };
 </script>
 

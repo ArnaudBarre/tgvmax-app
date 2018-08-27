@@ -46,8 +46,8 @@ export default {
   methods: {
     search() {
       this.loading = true;
-      console.log();
-      axios.get('search', { params: this.$store.state })
+      const { startDate, startStation, endStation } = this.$store.state;
+      axios.get('search', { params: { startDate, startStation, endStation } })
         .then(({ data }) => {
           this.$store.commit('set', { key: 'results', value: data });
           this.loading = false; // TODO use finally and check babel transformation

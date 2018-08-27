@@ -2,21 +2,7 @@
   <v-layout column>
     <StartToolbar class="fixedMarginBottom" />
     <SearchButton class="searchButton" />
-    <EndToolbar class="mb-3" />
-    <v-card v-if="results">
-      <v-card-title class="primary">
-        <v-layout justify-space-between>
-          <div class="white--text">Horaires disponibles</div>
-          <v-icon color="white" @click="clearResults" style="float: right">close</v-icon>
-        </v-layout>
-      </v-card-title>
-      <v-card-text>
-        <v-layout column align-center>
-          <span v-if="!results.length">Aucun trajet disponible 😞</span>
-          <div v-for="result in results" :key="result">{{ result }}</div>
-        </v-layout>
-      </v-card-text>
-    </v-card>
+    <EndToolbar />
   </v-layout>
 </template>
 
@@ -27,16 +13,6 @@ import EndToolbar from './EndToolbar.vue';
 
 export default {
   components: { StartToolbar, SearchButton, EndToolbar },
-  methods: {
-    clearResults() {
-      this.$store.commit('set', { key: 'results', value: undefined });
-    },
-  },
-  computed: {
-    results() {
-      return this.$store.state.results;
-    },
-  },
 };
 </script>
 
