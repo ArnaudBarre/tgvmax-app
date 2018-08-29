@@ -4,6 +4,7 @@
                   single-line
                   hide-details
                   clearable
+                  class="pt-0"
                   :value="station"
                   :items="stationsNames"
                   v-on:change="set"
