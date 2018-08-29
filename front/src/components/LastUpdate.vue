@@ -1,6 +1,6 @@
 <template>
   <v-layout align-center class="white caption">
-    <v-tooltip right class="hidden-sm-and-down">
+    <v-tooltip right>
       <span slot="activator" class="grey--text mx-2">Dernière mise à jour : {{ lastUpdate }}</span>
       <span>La SNCF met à jour ses données publiques toutes les 24 heures</span>
     </v-tooltip>

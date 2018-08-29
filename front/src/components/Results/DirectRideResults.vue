@@ -3,7 +3,7 @@
     <v-card-title class="primary">
       <v-layout justify-space-between>
         <div class="title white--text">Trajets directs</div>
-        <v-icon color="white" @click="clearResults" style="float: right">close</v-icon>
+        <v-icon color="white" @click="clearResults">close</v-icon>
       </v-layout>
     </v-card-title>
     <v-card-text>

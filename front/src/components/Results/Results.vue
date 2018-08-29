@@ -3,6 +3,7 @@
     <v-card v-if="!hasResults">
       <v-card-text class="text-xs-center">
         <span>Aucun trajet disponible 😞</span>
+        <v-icon @click="clearResults" style="float: right; height: 21px">close</v-icon>
       </v-card-text>
     </v-card>
     <DirectRideResults v-if="hasResults" :results="results.directRide" class="mb-3" />
@@ -26,6 +27,11 @@ export default {
     },
     hasResults() {
       return this.results.connections.length || this.results.directRide.length;
+    },
+  },
+  methods: {
+    clearResults() {
+      this.$store.commit('set', { key: 'results', value: undefined });
     },
   },
 };

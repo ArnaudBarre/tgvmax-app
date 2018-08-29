@@ -2,9 +2,15 @@
   <v-app>
     <v-content>
       <LastUpdate class="topRight" />
-      <v-layout class="topLeft" column>
-        <Search class="mb-3" />
-        <Results />
+      <v-layout
+        column
+        :class="['search', {fullWidth: $vuetify.breakpoint.smAndDown, topLeft: $vuetify.breakpoint.mdAndUp}]">
+        <v-flex>
+          <Search class="mb-2" />
+        </v-flex>
+        <v-flex fill-height style="overflow-y: scroll">
+          <Results />
+        </v-flex>
       </v-layout>
       <AppMap />
     </v-content>
@@ -29,11 +35,22 @@ export default {
   z-index: 1001;
 }
 
-.topLeft {
+.search {
   position: absolute !important;
-  width: 350px;
   z-index: 1001;
+  max-height: 100%;
+}
+
+.topLeft {
+  width: 350px;
   left: 16px;
-  top: 16px;
+  padding-top: 16px;
+}
+
+.fullWidth {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 20px;
 }
 </style>

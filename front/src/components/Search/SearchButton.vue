@@ -1,13 +1,13 @@
 <template>
   <v-btn
-    absolute
     :loading="loading"
     :disabled="hasErrors"
-    fab
-    small
+    flat
+    icon
+    class="ml-2 mr-0"
     @click="search"
     color="primary">
-    <v-icon>search</v-icon>
+    <v-icon style="width: 35px">search</v-icon>
   </v-btn>
 </template>
 
