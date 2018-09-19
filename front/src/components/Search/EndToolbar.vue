@@ -1,7 +1,11 @@
 <template>
   <v-toolbar dense>
-    <v-icon @click="reverse" class="mr-2">swap_vert</v-icon>
-    <StationPicker label="Arrivée à" storeKey="endStation" />
+    <v-icon
+      class="mr-2"
+      @click="reverse">swap_vert</v-icon>
+    <StationPicker
+      label="Arrivée à"
+      store-key="endStation" />
     <SearchButton />
   </v-toolbar>
 </template>

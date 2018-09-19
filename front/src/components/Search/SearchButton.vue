@@ -5,15 +5,15 @@
     flat
     icon
     class="ml-2 mr-0"
-    @click="search"
-    color="primary">
+    color="primary"
+    @click="search">
     <v-icon style="width: 35px">search</v-icon>
   </v-btn>
 </template>
 
 <script>
 import axios from 'axios';
-import stations from '../../../../stations';
+import stations from '../../../../stations.json';
 
 export default {
   data() {
@@ -51,7 +51,9 @@ export default {
         .then(({ data }) => {
           this.$store.commit('set', { key: 'results', value: data });
           this.loading = false; // TODO use finally and check babel transformation
-        }).catch(() => this.loading = false); // TODO
+        }).catch(() => {
+          this.loading = false; // TODO
+        });
     },
   },
 };

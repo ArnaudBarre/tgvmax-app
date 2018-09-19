@@ -1,16 +1,27 @@
 <template>
   <v-toolbar dense>
-    <v-btn flat small icon @click="locate" :loading="waitingLocation" class="mr-2">
+    <v-btn
+      :loading="waitingLocation"
+      flat
+      small
+      icon
+      class="mr-2"
+      @click="locate">
       <v-icon :color="userLocated ? 'primary': ''">gps_fixed</v-icon>
     </v-btn>
-    <StationPicker label="Partir de" storeKey="startStation" autofocus />
-    <DatePicker class="ml-2" storeKey="startDate" />
+    <StationPicker
+      label="Partir de"
+      store-key="startStation"
+      autofocus />
+    <DatePicker
+      class="ml-2"
+      store-key="startDate" />
   </v-toolbar>
 </template>
 
 <script>
 import CheapRuler from '../../CheapRuler';
-import stations from '../../../../stations';
+import stations from '../../../../stations.json';
 import StationPicker from './StationPicker.vue';
 import DatePicker from './DatePicker.vue';
 
@@ -32,12 +43,14 @@ export default {
         this.waitingLocation = false;
         this.userLocated = true;
         const cheapRuler = new CheapRuler(gCoords.lat);
-        const nearestStation = stations.map(s => {
-          s.distance = cheapRuler.distance(gCoords, s.coordinates);
-          return s;
-        }).sort((a, b) => a.distance - b.distance)[0];
+        const nearestStation = stations.map(s => ({
+          ...s,
+          distance: cheapRuler.distance(gCoords, s.coordinates),
+        })).sort((a, b) => a.distance - b.distance)[0];
         this.$store.commit('set', { key: 'startStation', value: nearestStation.name });
-      }, () => this.waitingLocation = false);
+      }, () => {
+        this.waitingLocation = false;
+      });
     },
   },
 };

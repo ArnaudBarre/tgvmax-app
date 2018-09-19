@@ -3,12 +3,17 @@
     <v-content>
       <LastUpdate class="topRight" />
       <v-layout
-        column
-        :class="['search', {fullWidth: $vuetify.breakpoint.smAndDown, topLeft: $vuetify.breakpoint.mdAndUp}]">
+        :class="['search', {
+          fullWidth: $vuetify.breakpoint.smAndDown,
+          topLeft: $vuetify.breakpoint.mdAndUp
+        }]"
+        column>
         <v-flex>
           <Search class="mb-2" />
         </v-flex>
-        <v-flex fill-height style="overflow-y: scroll">
+        <v-flex
+          fill-height
+          style="overflow-y: scroll">
           <Results />
         </v-flex>
       </v-layout>
@@ -24,7 +29,9 @@ import Search from './Search/Search.vue';
 import Results from './Results/Results.vue';
 
 export default {
-  components: { Search, AppMap, Results, LastUpdate },
+  components: {
+    Search, AppMap, Results, LastUpdate,
+  },
 };
 </script>
 

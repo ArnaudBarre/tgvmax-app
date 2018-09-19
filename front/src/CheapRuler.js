@@ -1,3 +1,5 @@
+/* eslint-disable no-mixed-operators */
+
 // From: mapbox/cheap-ruler
 export default class CheapRuler {
   constructor(lat) {

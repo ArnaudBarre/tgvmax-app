@@ -1,4 +1,6 @@
-import stations from '../../stations';
+/* eslint-disable no-param-reassign */
+
+import stations from '../../stations.json';
 
 export default {
   state: {
@@ -10,10 +12,7 @@ export default {
     results: undefined,
     zoom: 5,
     center: { lat: 46.5, lng: 2.5 },
-    stations: stations.map(s => {
-      s.popupOpen = false;
-      return s;
-    }),
+    stations: stations.map(s => ({ ...s, popupOpen: false })),
     max: Math.max(...stations.map(s => s.count)),
   },
   mutations: {

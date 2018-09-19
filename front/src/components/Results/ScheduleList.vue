@@ -1,14 +1,20 @@
 <template>
   <div class="text-xs-center">
     <transition-group name="toggle">
-      <div v-for="schedule in schedules" :key="schedule">{{schedule}}</div>
+      <div
+        v-for="schedule in schedules"
+        :key="schedule">{{ schedule }}
+      </div>
     </transition-group>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['list', 'hide'],
+  props: {
+    list: { type: Array, default: () => [] },
+    hide: { type: Boolean, default: true },
+  },
   computed: {
     schedules() {
       return this.hide ? this.list.slice(0, 3) : this.list;

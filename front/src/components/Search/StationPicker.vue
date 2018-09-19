@@ -1,22 +1,26 @@
 <template>
-  <v-autocomplete :label="label"
-                  no-data-text="Aucune station trouvée"
-                  single-line
-                  hide-details
-                  clearable
-                  class="pt-0"
-                  :value="station"
-                  :items="stationsNames"
-                  v-on:change="set"
-                  :autofocus="autofocus">
-  </v-autocomplete>
+  <v-autocomplete
+    :label="label"
+    :value="station"
+    :items="stationsNames"
+    :autofocus="autofocus"
+    no-data-text="Aucune station trouvée"
+    single-line
+    hide-details
+    clearable
+    class="pt-0"
+    @change="set" />
 </template>
 
 <script>
-import stations from '../../../../stations';
+import stations from '../../../../stations.json';
 
 export default {
-  props: ['label', 'autofocus', 'storeKey'],
+  props: {
+    label: { type: String, required: true },
+    autofocus: { type: Boolean, default: false },
+    storeKey: { type: String, required: true },
+  },
   data() {
     return {
       stationsNames: stations.map(s => s.name),

@@ -3,15 +3,21 @@
     <v-card v-if="!hasResults">
       <v-card-text class="text-xs-center">
         <span>Aucun trajet disponible 😞</span>
-        <v-icon @click="clearResults" style="float: right; height: 21px">close</v-icon>
+        <v-icon
+          style="float: right; height: 21px"
+          @click="clearResults">close</v-icon>
       </v-card-text>
     </v-card>
-    <DirectRideResults v-if="hasResults" :results="results.directRide" class="mb-3" />
-    <ConnectionResult v-for="result in results.connections"
-                      :connection="true"
-                      :result="result"
-                      :key="result.station"
-                      class="mb-3" />
+    <DirectRideResults
+      v-if="hasResults"
+      :results="results.directRide"
+      class="mb-3" />
+    <ConnectionResult
+      v-for="result in results.connections"
+      :connection="true"
+      :result="result"
+      :key="result.station"
+      class="mb-3" />
   </div>
 </template>
 
