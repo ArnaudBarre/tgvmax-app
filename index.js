@@ -14,7 +14,11 @@ moment.locale('fr');
 
 app.get('/lastUpdate', (req, res) => {
   axios(api)
-    .then(response => res.send(moment(response.data.records[0].record_timestamp).fromNow()))
+    .then(response => res.send(
+      response.data.records.length
+        ? moment(response.data.records[0].record_timestamp).fromNow()
+        : 'Aucune donnée disponible'),
+    )
     .catch(({ statusCode }) => res.sendStatus(statusCode ? statusCode : 500));
 });
 
