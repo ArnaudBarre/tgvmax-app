@@ -13,6 +13,7 @@
 
 <script>
 import axios from 'axios';
+import { mapGetters } from 'vuex';
 import stations from '../../../../stations.json';
 
 export default {
@@ -23,18 +24,7 @@ export default {
     };
   },
   computed: {
-    startDate() {
-      return this.$store.state.startDate;
-    },
-    endDate() {
-      return this.$store.state.endDate;
-    },
-    startStation() {
-      return this.$store.state.startStation;
-    },
-    endStation() {
-      return this.$store.state.endStation;
-    }, // TODO : spread getters
+    ...mapGetters(['startDate', 'startStation', 'endStation']),
     hasErrors() {
       return !(
         this.startDate
@@ -50,9 +40,10 @@ export default {
       axios.get('search', { params: { startDate, startStation, endStation } })
         .then(({ data }) => {
           this.$store.commit('set', { key: 'results', value: data });
-          this.loading = false; // TODO use finally and check babel transformation
         }).catch(() => {
-          this.loading = false; // TODO
+          // TODO
+        }).finally(() => {
+          this.loading = false;
         });
     },
   },

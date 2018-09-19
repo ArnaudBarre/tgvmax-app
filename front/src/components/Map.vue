@@ -30,11 +30,12 @@
     <GmapMarker
       v-if="userLocation"
       :icon="positionIcon"
-      :position="userLocation"/>
+      :position="userLocation" />
   </GmapMap>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import positionSVG from '../assets/location.svg';
 import trainSVG from '../assets/train.svg';
 
@@ -46,27 +47,7 @@ export default {
     };
   },
   computed: {
-    userLocation() {
-      return this.$store.state.userLocation;
-    },
-    startStation() {
-      return this.$store.state.startStation;
-    },
-    endStation() {
-      return this.$store.state.endStation;
-    },
-    max() {
-      return this.$store.state.max;
-    },
-    markers() {
-      return this.$store.state.stations;
-    },
-    center() {
-      return this.$store.state.center;
-    },
-    zoom() {
-      return this.$store.state.zoom;
-    }, // TODO: spread getters
+    ...mapGetters(['userLocation', 'startStation', 'endStation', 'max', 'markers', 'center', 'zoom']),
   },
   methods: {
     set(key, value) {
