@@ -1,6 +1,7 @@
 {
   "name": "TGVmax App",
   "short_name": "TGVmax App",
+  "lang": "fr",
   "icons": [
     {
       "src": "/img/icons/android-chrome-192x192.png",
@@ -15,6 +16,6 @@
   ],
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#1976d2"
+  "background_color": "white",
+  "theme_color": "white"
 }
