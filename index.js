@@ -7,7 +7,7 @@ const api = 'https://ressources.data.sncf.com/api/records/1.0/search/?dataset=tg
 
 const app = express();
 app.use(compression());
-app.use(express.static(__dirname + '/front'));
+app.use(express.static(__dirname + '/front/dist'));
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
 moment.locale('fr');
