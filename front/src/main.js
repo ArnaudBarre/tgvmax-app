@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import * as VueGoogleMaps from 'vue2-google-maps';
 
-import '../node_modules/vuetify/src/stylus/app.styl';
 import Vuetify from 'vuetify/es5/components/Vuetify';
 import VApp from 'vuetify/es5/components/VApp';
 import VSelect from 'vuetify/es5/components/VSelect';
@@ -17,9 +16,11 @@ import VIcon from 'vuetify/es5/components/VIcon';
 import VBtn from 'vuetify/es5/components/VBtn';
 import VToolbar from 'vuetify/es5/components/VToolbar';
 import VTooltip from 'vuetify/es5/components/VTooltip';
+import '../node_modules/vuetify/src/stylus/app.styl';
 
 import App from './components/App.vue';
 import store from './store';
+import './registerServiceWorker';
 
 Vue.use(Vuex);
 
@@ -48,7 +49,6 @@ Vue.use(Vuetify, {
 });
 
 new Vue({
-  el: '#app',
   store: new Vuex.Store(store),
   render: h => h(App),
-});
+}).$mount('#app');

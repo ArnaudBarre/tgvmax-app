@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>TGVmax App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="Description" content="Trouver les places TGVmax disponibles !">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" type="text/css">
-  <link rel="icon" href="src/assets/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <style>
   @keyframes slide {
     from {
@@ -30,12 +31,10 @@
   <div class="splashScreen">
     <div style="display: inline-block; overflow-x: hidden">
       <h2>TGVmax App</h2>
-      <img src="src/assets/logo.svg" height="80px" style="animation: slide 2s linear infinite">
+      <img src="<%= BASE_URL %>img/logo.svg" height="80px" style="animation: slide 2s linear infinite">
     </div>
   </div>
 </div>
-<!-- load icons -->
-<i class="material-icons"></i>
-<script src="dist/main.js"></script>
+<!-- built files will be auto injected -->
 </body>
 </html>
