@@ -1,53 +1,82 @@
 <template>
-  <GmapMap
-    :options="{ disableDefaultUI: true, minZoom: 6, maxZoom: 17 }"
-    :center="center"
+  <l-map
     :zoom="zoom"
-    map-type-id="roadmap"
-    style="width: 100%; height: 100%"
-    @zoom_changed="$event => set('zoom', $event)">
-    <GmapMarker
+    :min-zoom="6"
+    :max-zoom="17"
+    :center="center"
+    :options="{ zoomControl: false, attributionControl: false }"
+    style="width: 100%; height: 100%">
+    <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"/>
+    <l-marker
       v-for="m in markers"
+      :ref="m.name"
       :icon="stationIcon"
       :key="m.name"
-      :title="m.name"
-      :position="m.coordinates"
-      :clickable="true"
-      @click="m.popupOpen = !m.popupOpen">
-      <GmapInfoWindow
-        :options="{ maxWidth: 350 }"
-        :position="m.coordinates"
-        :opened="m.popupOpen"
-        @closeclick="m.popupOpen = false">
+      :lat-lng="m.coordinates">
+      <l-popup>
         <div>{{ m.name + ' - Fréquence : ' + Math.round(m.count / max * 100) + '%' }}</div>
         <div class="text-xs-center">
           <a @click="set('startStation', m.name)">Partir de là</a>
           <span class="mx-2">-</span>
           <a @click="set('endStation', m.name)">Y aller</a>
         </div>
-      </GmapInfoWindow>
-    </GmapMarker>
-    <GmapMarker
+      </l-popup>
+    </l-marker>
+    <l-marker
       v-if="userLocation"
       :icon="positionIcon"
-      :position="userLocation" />
-  </GmapMap>
+      :lat-lng="userLocation"/>
+    <l-control-attribution
+      prefix="OpenStreetMap"
+      position="bottomright"/>
+  </l-map>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import positionSVG from '../assets/location.svg';
-import trainSVG from '../assets/train.svg';
+import { divIcon } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { LMap, LTileLayer, LMarker, LTooltip, LPopup, LControlAttribution } from 'vue2-leaflet';
+
+const stationIcon = divIcon({
+  html: '<i class="material-icons">train</i>',
+  className: '', // remove default class
+  iconSize: [24, 24], // default material icon size
+  tooltipAnchor: [7, 0], // on the side
+  popupAnchor: [0, -7], // on the top
+});
+
+const positionIcon = divIcon({
+  html: '<i class="material-icons">my_location</i>',
+  className: 'primary--text',
+  iconSize: [24, 24], // default material icon size
+});
 
 export default {
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+    LTooltip,
+    LPopup,
+    LControlAttribution,
+  },
   data() {
     return {
-      positionIcon: { url: positionSVG, anchor: { x: 15, y: 15 } },
-      stationIcon: { url: trainSVG, anchor: { x: 12, y: 12 } },
+      stationIcon,
+      positionIcon,
     };
   },
   computed: {
     ...mapGetters(['userLocation', 'startStation', 'endStation', 'max', 'markers', 'center', 'zoom']),
+  },
+  watch: {
+    startStation(newStation) {
+      this.$refs[newStation][0].mapObject.openPopup();
+    },
+    endStation(newStation) {
+      this.$refs[newStation][0].mapObject.openPopup();
+    },
   },
   methods: {
     set(key, value) {

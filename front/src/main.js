@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import * as VueGoogleMaps from 'vue2-google-maps';
 
 import Vuetify from 'vuetify/es5/components/Vuetify';
 import VApp from 'vuetify/es5/components/VApp';
@@ -23,12 +22,6 @@ import store from './store';
 import './registerServiceWorker';
 
 Vue.use(Vuex);
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyAsq0jBT7iBfw9b2_tAsHbkUuY532ZY9wA',
-  },
-});
 
 Vue.use(Vuetify, {
   components: {
