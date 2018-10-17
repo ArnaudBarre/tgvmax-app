@@ -41,28 +41,20 @@ const timeSort = (a, b) => {
   }
 };
 
-const filterResult = (value, index, array) => {
-  return array.findIndex(v => v.heure_depart === value.heure_depart) === index;
+const filterResult = key => (value, index, array) => {
+  return array.findIndex(v => v[key] === value[key] && v.heure_depart === value.heure_depart) === index;
 };
 
 const groupResults = (data, key) => {
   return data.records
     .map(r => r.fields)
     .sort(timeSort)
-    .filter(filterResult)
-    .map(fields => ({ city: fields[key], hours: `${fields.heure_depart} -> ${fields.heure_arrivee}` }))
+    .filter(filterResult(key))
+    .map(fields => ({ city: fields[key], number: fields.train_no, hours: {start: fields.heure_depart, end: fields.heure_arrivee }}))
     .reduce((acc, val) => {
-      (acc[val.city] = acc[val.city] || new Set()).add(val.hours);
+      (acc[val.city] = acc[val.city] || []).push(val);
       return acc;
     }, {});
-};
-
-const groupDirectResults = data => {
-  return data.records
-    .map(r => r.fields)
-    .sort(timeSort)
-    .filter(filterResult)
-    .map(fields => `${fields.heure_depart} -> ${fields.heure_arrivee}`);
 };
 
 app.get('/search', (req, res) => {
@@ -72,19 +64,37 @@ app.get('/search', (req, res) => {
     callApi(startDate, startStation, null),
     callApi(startDate, null, endStation),
   ]).then(([directRideResponse, firstRideResponse, secondRideResponse]) => {
-    const dataDirectRide = groupDirectResults(directRideResponse.data);
+    const dataDirectRide = groupResults(directRideResponse.data, 'origine')[startStation] || [];
     const dataFirstRide = groupResults(firstRideResponse.data, 'destination');
     const dataSecondRide = groupResults(secondRideResponse.data, 'origine');
 
+    const directTrainNumbers = dataDirectRide.map(train => train.number);
     const connections = [];
     Object.keys(dataFirstRide).forEach(station => {
       if (dataSecondRide.hasOwnProperty(station)) {
-        connections.push({ station, firstRide: [...dataFirstRide[station]], secondRide: [...dataSecondRide[station]] });
+        const firstFistRideEnd = dataFirstRide[station][0].hours.end;
+        const lastSecondRideStart = dataSecondRide[station][dataSecondRide[station].length - 1].hours.start;
+        const possibleFirstRides = dataFirstRide[station].filter(({ hours, number }) =>
+          !directTrainNumbers.includes(number) &&
+          hours.end.replace(':', '') - hours.start.replace(':', '') > 0 && // avoid night train for first ride
+          hours.end.replace(':', '') - lastSecondRideStart.replace(':', '') < 0
+        );
+        const possibleSecondRides = dataSecondRide[station].filter(({ hours, number }) =>
+          !directTrainNumbers.includes(number) &&
+          hours.start.replace(':', '') - firstFistRideEnd.replace(':', '') > 0
+        );
+        if (possibleFirstRides.length && possibleSecondRides.length) {
+          connections.push({
+            station,
+            firstRide: possibleFirstRides.map(({ hours }) => `${hours.start} -> ${hours.end}`),
+            secondRide: possibleSecondRides.map(({ hours }) => `${hours.start} -> ${hours.end}`)
+          });
+        }
       }
     });
 
     res.send({
-      directRide: dataDirectRide,
+      directRide: dataDirectRide.map(({ hours }) => `${hours.start} -> ${hours.end}`),
       connections,
     });
   }).catch(({ statusCode }) => res.sendStatus(statusCode ? statusCode : 500));
