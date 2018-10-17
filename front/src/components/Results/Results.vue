@@ -1,23 +1,34 @@
 <template>
-  <div v-if="results">
-    <v-card v-if="!hasResults">
+  <div>
+    <v-card v-if="hasError">
+      <v-card-text class="text-xs-center">
+        <span>Une erreur est survenue 👨‍🔧</span>
+        <v-icon
+          style="float: right; height: 21px"
+          @click="clearError">close
+        </v-icon>
+      </v-card-text>
+    </v-card>
+    <v-card v-if="noResults">
       <v-card-text class="text-xs-center">
         <span>Aucun trajet disponible 😞</span>
         <v-icon
           style="float: right; height: 21px"
-          @click="clearResults">close</v-icon>
+          @click="clearResults">close
+        </v-icon>
       </v-card-text>
     </v-card>
-    <DirectRideResults
-      v-if="hasResults"
-      :results="results.directRide"
-      class="mb-3" />
-    <ConnectionResult
-      v-for="result in results.connections"
-      :connection="true"
-      :result="result"
-      :key="result.station"
-      class="mb-3" />
+    <div v-if="hasResults">
+      <DirectRideResults
+        :results="results.directRide"
+        class="mb-3" />
+      <ConnectionResult
+        v-for="result in results.connections"
+        :connection="true"
+        :result="result"
+        :key="result.station"
+        class="mb-3" />
+    </div>
   </div>
 </template>
 
@@ -31,13 +42,22 @@ export default {
     results() {
       return this.$store.state.results;
     },
+    hasError() {
+      return this.$store.state.error;
+    },
     hasResults() {
-      return this.results.connections.length || this.results.directRide.length;
+      return this.results && (this.results.connections.length || this.results.directRide.length);
+    },
+    noResults() {
+      return this.results && !this.results.connections.length && !this.results.directRide.length;
     },
   },
   methods: {
     clearResults() {
       this.$store.commit('set', { key: 'results', value: undefined });
+    },
+    clearError() {
+      this.$store.commit('set', { key: 'error', value: false });
     },
   },
 };

@@ -6,7 +6,7 @@
     :center="center"
     :options="{ zoomControl: false, attributionControl: false }"
     style="width: 100%; height: 100%">
-    <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"/>
+    <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
     <l-marker
       v-for="m in markers"
       :ref="m.name"
@@ -25,10 +25,10 @@
     <l-marker
       v-if="userLocation"
       :icon="positionIcon"
-      :lat-lng="userLocation"/>
+      :lat-lng="userLocation" />
     <l-control-attribution
       prefix="OpenStreetMap"
-      position="bottomright"/>
+      position="bottomright" />
   </l-map>
 </template>
 
@@ -72,10 +72,14 @@ export default {
   },
   watch: {
     startStation(newStation) {
-      this.$refs[newStation][0].mapObject.openPopup();
+      if (newStation) {
+        this.$refs[newStation][0].mapObject.openPopup();
+      }
     },
     endStation(newStation) {
-      this.$refs[newStation][0].mapObject.openPopup();
+      if (newStation) {
+        this.$refs[newStation][0].mapObject.openPopup();
+      }
     },
   },
   methods: {

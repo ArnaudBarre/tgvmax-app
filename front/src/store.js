@@ -7,6 +7,7 @@ const initialState = {
   startDate: undefined,
   userLocation: undefined,
   results: undefined,
+  error: false,
   zoom: 6,
   center: { lat: 46.5, lng: 2.5 },
   markers: stations,
@@ -23,7 +24,7 @@ export default {
     set(state, { key, value }) {
       state[key] = value;
       if (key === 'startStation' || key === 'endStation') {
-        state.zoom = 5;
+        state.zoom = 6;
       }
     },
   },

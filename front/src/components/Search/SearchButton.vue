@@ -36,13 +36,17 @@ export default {
   methods: {
     search() {
       this.loading = true;
+      this.$store.commit('set', { key: 'results', value: undefined });
+      this.$store.commit('set', { key: 'error', value: false });
       const { startDate, startStation, endStation } = this.$store.state;
       axios.get('search', { params: { startDate, startStation, endStation } })
         .then(({ data }) => {
           this.$store.commit('set', { key: 'results', value: data });
-        }).catch(() => {
-          // TODO
-        }).finally(() => {
+        })
+        .catch(() => {
+          this.$store.commit('set', { key: 'error', value: true });
+        })
+        .finally(() => {
           this.loading = false;
         });
     },
