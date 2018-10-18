@@ -13,7 +13,7 @@
       :icon="stationIcon"
       :key="m.name"
       :lat-lng="m.coordinates">
-      <l-popup>
+      <l-popup :options="{ autoClose: false, closeOnClick: false }">
         <div>{{ m.name + ' - Fréquence : ' + Math.round(m.count / max * 100) + '%' }}</div>
         <div class="text-xs-center">
           <a @click="set('startStation', m.name)">Partir de là</a>
@@ -74,6 +74,7 @@ export default {
     startStation(newStation) {
       if (newStation) {
         this.$refs[newStation][0].mapObject.openPopup();
+        this.$refs[this.endStation][0].mapObject.openPopup();
       }
     },
     endStation(newStation) {
