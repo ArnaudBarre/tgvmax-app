@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import stations from '../../stations.json';
+import stations from '../stations.json';
 
 const initialState = {
   startStation: undefined,

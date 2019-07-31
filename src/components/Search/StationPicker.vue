@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import stations from '../../../../stations.json';
+import stations from '../../../stations.json';
 
 export default {
   props: {

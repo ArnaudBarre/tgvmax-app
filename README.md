@@ -2,4 +2,4 @@
 
 The code of the website : tgvmax.app
 
-A Vue.js - Express project
+A Vue.js - Netlify project

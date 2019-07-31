@@ -21,7 +21,7 @@
 
 <script>
 import CheapRuler from '../../CheapRuler';
-import stations from '../../../../stations.json';
+import stations from '../../../stations.json';
 import StationPicker from './StationPicker.vue';
 import DatePicker from './DatePicker.vue';
 

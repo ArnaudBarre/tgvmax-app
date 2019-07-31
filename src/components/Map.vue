@@ -74,7 +74,9 @@ export default {
     startStation(newStation) {
       if (newStation) {
         this.$refs[newStation][0].mapObject.openPopup();
-        this.$refs[this.endStation][0].mapObject.openPopup();
+        if (this.$refs[this.endStation]) {
+          this.$refs[this.endStation][0].mapObject.openPopup();
+        }
       }
     },
     endStation(newStation) {

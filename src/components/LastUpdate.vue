@@ -21,7 +21,7 @@ export default {
     };
   },
   created() {
-    axios.get('lastUpdate')
+    axios.get('/.netlify/functions/lastUpdate')
       .then(({ data }) => {
         this.lastUpdate = data;
       })

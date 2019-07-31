@@ -14,7 +14,7 @@
 <script>
 import axios from 'axios';
 import { mapGetters } from 'vuex';
-import stations from '../../../../stations.json';
+import stations from '../../../stations.json';
 
 export default {
   data() {
@@ -39,7 +39,7 @@ export default {
       this.$store.commit('set', { key: 'results', value: undefined });
       this.$store.commit('set', { key: 'error', value: false });
       const { startDate, startStation, endStation } = this.$store.state;
-      axios.get('search', { params: { startDate, startStation, endStation } })
+      axios.get('/.netlify/functions/search', { params: { startDate, startStation, endStation } })
         .then(({ data }) => {
           this.$store.commit('set', { key: 'results', value: data });
         })
