@@ -6,7 +6,7 @@
     :center="center"
     :options="{ zoomControl: false, attributionControl: false }"
     style="width: 100%; height: 100%">
-    <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+    <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
     <l-marker
       v-for="m in markers"
       :ref="m.name"

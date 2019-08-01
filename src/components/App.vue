@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <v-content>
       <LastUpdate class="topRight" />
       <v-layout
@@ -36,6 +36,11 @@ export default {
 </script>
 
 <style>
+.app .application--wrap {
+  /* avoid min-height: 100vh causing scrolling on browser phone*/
+  min-height: inherit;
+}
+
 .topRight {
   position: absolute;
   right: 0;
